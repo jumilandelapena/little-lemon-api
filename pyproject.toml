@@ -1,0 +1,15 @@
+[project]
+name = "littlelemon"
+version = "0.1.0"
+description = "Little Lemon restaurant API built with Django REST Framework"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2",
+    "djangorestframework>=3.16",
+    "djoser>=2.3",
+    "django-filter>=25.1",
+]
+
+[tool.uv]
+package = false
