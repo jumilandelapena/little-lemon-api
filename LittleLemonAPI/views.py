@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
 from .filters import MenuItemFilter, OrderFilter
@@ -277,7 +277,8 @@ class OrderDetailView(DestroyWith200Mixin, generics.RetrieveUpdateDestroyAPIView
         return is_delivery_crew(user) and not is_manager(user)
 
     def get_serializer_class(self):
-        if self._crew_only():
+        # Crew read the full order; they only *write* through the status-only serializer.
+        if self._crew_only() and self.request.method not in SAFE_METHODS:
             return DeliveryCrewOrderSerializer
         return OrderSerializer
 

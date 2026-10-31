@@ -140,7 +140,9 @@ class DeliveryCrewOrderTests(OrderTestBase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.data["count"], 1)
         self.assertEqual(res.data["results"][0]["delivery_crew"], self.crew.pk)
-        self.assertEqual(self.client.get(self.assigned_url).status_code, 200)
+        detail = self.client.get(self.assigned_url)
+        self.assertEqual(detail.status_code, 200)
+        self.assertEqual(detail.data["total"], "31.25")  # crew read the full order
         self.assertEqual(self.client.get(self.unassigned_url).status_code, 404)
 
     def test_crew_updates_status(self):
